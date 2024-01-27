@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+
+        #bus-info {
+            margin-top: 10px;
+        }
+
+        #bus-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .bus-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <div id="bus-info">
+        <h2>Bus Information</h2>
+        <ul id="bus-list"></ul>
+    </div>
+
+    <script>
+        // This is a simplified example, and it assumes you have a backend providing bus location data.
+
+        // Sample bus data (replace this with actual data from your backend)
+        const busData = [
+            { id: 1, name: 'Bus A', latitude: 12.971598, longitude: 77.594562 },
+            { id: 2, name: 'Bus B', latitude: 12.935497, longitude: 77.625213 },
+            // Add more buses as needed
+        ];
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 12.971598, lng: 77.594562 }, // Bangalore coordinates
+                zoom: 12,
+            });
+
+            // Display buses on the map
+            busData.forEach(bus => {
+                const marker = new google.maps.Marker({
+                    position: { lat: bus.latitude, lng: bus.longitude },
+                    map: map,
+                    title: bus.name,
+                });
+
+                // Add a click event listener to show bus information
+                marker.addListener('click', () => showBusInfo(bus));
+            });
+        }
+
+        function showBusInfo(bus) {
+            const busList = document.getElementById('bus-list');
+            const busItem = document.createElement('li');
+            busItem.className = 'bus-item';
+            busItem.innerHTML = `<strong>${bus.name}</strong><br>Latitude: ${bus.latitude}<br>Longitude: ${bus.longitude}`;
+            busList.appendChild(busItem);
+        }
+    </script>
+    <!-- Include the Google Maps API script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbIczYb5ovNmK6DtuMMqfrtMKZmBG552U&callback=initMap" async defer></script>
+</body>
+</html>
